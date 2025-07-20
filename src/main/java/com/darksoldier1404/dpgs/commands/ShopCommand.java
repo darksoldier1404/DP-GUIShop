@@ -15,7 +15,7 @@ public class ShopCommand {
 
     public ShopCommand() {
         builder.addSubCommand("create", "dpgs.admin", lang.get("cashshop_cmd_create"), true, (p, args) -> {
-            if (args.length == 4) {
+            if (args.length == 3) {
                 ShopFunction.createShop((Player) p, args[1], args[2]);
             } else {
                 p.sendMessage(prefix + lang.get("cashshop_cmd_create_usage"));
