@@ -23,6 +23,8 @@ cashshop_cmd_permission: "/shop permission <상점이름> <권한> - 상점 권�
 cashshop_cmd_permission_usage: "사용법: /shop permission <상점이름> <권한>"
 cashshop_cmd_removepermission: "/shop removepermission <상점이름> - 상점 권한 제거"
 cashshop_cmd_removepermission_usage: "사용법: /shop removepermission <상점이름>"
+cashshop_cmd_list: "/shop list - 모든 상점 목록"
+cashshop_cmd_list_usage: "사용법: /shop list"
 shop_err_exists: "이미 존재하는 상점입니다: {0}"
 shop_err_invalid_size: "잘못된 상점 크기입니다."
 shop_err_size_range: "상점 크기는 2~6 사이여야 합니다."
