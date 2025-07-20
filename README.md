@@ -18,9 +18,9 @@
 
 ![](https://dpnw.site/assets/img/desc_card/desc.jpg)
 
-# DP-Shop Plugin Introduction
+# DP-GUIShop Plugin Introduction
 
-DP-Shop is a Minecraft plugin that allows for easy creation and management of shops on servers. It offers intuitive item and price configuration through a GUI, along with features for enabling/disabling shops and pagination.
+DP-GUIShop is a Minecraft plugin that allows for easy creation and management of shops on servers. It offers intuitive item and price configuration through a GUI, along with features for enabling/disabling shops and pagination.
 
 ## Plugin Features
 - **GUI-Based Configuration**: Easily set items and prices using a graphical interface.
@@ -61,6 +61,6 @@ DP-Shop is a Minecraft plugin that allows for easy creation and management of sh
 
 ![](https://dpnw.site/assets/img/desc_card/screenshot.jpg)
 
-![](https://dpnw.site/assets/img/screenshot/DP-Shop/1.jpg)
+![](https://dpnw.site/assets/img/screenshot/DP-GUIShop/1.jpg)
 
-![](https://dpnw.site/assets/img/screenshot/DP-Shop/2.jpg)
+![](https://dpnw.site/assets/img/screenshot/DP-GUIShop/2.jpg)
