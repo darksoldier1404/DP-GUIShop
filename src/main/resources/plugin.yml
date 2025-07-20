@@ -1,0 +1,12 @@
+name: DP-GUIShop
+version: 1.0.0.0
+main: com.darksoldier1404.dpgs.GUIShop
+authors: [ DEAD_POOLIO_ ]
+api-version: 1.14
+depend:
+  - DPP-Core
+softdepend:
+  - PlaceholderAPI
+commands:
+  shop:
+    aliases: [ dpgs, 상점 ]
