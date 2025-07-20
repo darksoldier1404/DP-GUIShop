@@ -9,4 +9,4 @@ softdepend:
   - PlaceholderAPI
 commands:
   shop:
-    aliases: [ dpgs, 상점 ]
+    aliases: [ dpgs, 상점, dshop, dpshop ]
