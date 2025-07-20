@@ -67,7 +67,8 @@ DP-GUIShop is a Minecraft plugin that allows for easy creation and management of
 ## Usage Examples
 - Create a shop: `/shop create myshop`
 - Set shop pages: `/shop pages myshop 3`
-- Open item configuration GUI: `/shop items myshop 0`
+- Open item configuration GUI: `/shop items myshop`
+- Open price configuration GUI: `/shop price myshop`
 - Open a shop: `/shop open myshop`
 
 <br>
