@@ -367,10 +367,10 @@ public class ShopFunction {
         }
         p.sendMessage(prefix + lang.getWithArgs("shop_msg_shop_list_header"));
         for (Shop shop : shops.values()) {
-            String status = shop.isEnabled() ? "§aEnabled" : "§cDisabled";
-            String permission = shop.getPremission() != null ? shop.getPremission() : "None";
+            String status = shop.isEnabled() ? "§aEnabled§f" : "§cDisabled§f";
+            String permission = shop.getPremission() != null ? "§e"+shop.getPremission() : "§eNone";
             p.sendMessage(prefix + lang.getWithArgs("shop_msg_shop_list_item", shop.getName(), status, permission));
         }
-        p.sendMessage(prefix + lang.getWithArgs("shop_msg_shop_list_footer"));
+        p.sendMessage(prefix + lang.getWithArgs("shop_msg_shop_list_footer", String.valueOf(shops.size())));
     }
 }
