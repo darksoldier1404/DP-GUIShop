@@ -23,6 +23,8 @@ cashshop_cmd_permission: "/shop permission <shopname> <permission> - Set shop pe
 cashshop_cmd_permission_usage: "Usage: /shop permission <shopname> <permission>"
 cashshop_cmd_removepermission: "/shop removepermission <shopname> - Remove shop permission"
 cashshop_cmd_removepermission_usage: "Usage: /shop removepermission <shopname>"
+cashshop_cmd_list: "/shop list - List all shops"
+cashshop_cmd_list_usage: "Usage: /shop list"
 shop_err_exists: "Shop already exists: {0}"
 shop_err_invalid_size: "Invalid shop size."
 shop_err_size_range: "Shop size must be between 2 and 6."
