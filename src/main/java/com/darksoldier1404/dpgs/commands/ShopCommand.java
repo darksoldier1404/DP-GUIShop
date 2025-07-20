@@ -57,7 +57,7 @@ public class ShopCommand {
                 p.sendMessage(prefix + lang.get("cashshop_cmd_reload_usage"));
             }
         });
-        builder.addSubCommand("open", "dpgs.user", lang.get("cashshop_cmd_open"), true, (p, args) -> {
+        builder.addSubCommand("open", lang.get("cashshop_cmd_open"), true, (p, args) -> {
             if (args.length == 2) {
                 ShopFunction.openShop((Player) p, args[1]);
             } else {
@@ -97,6 +97,13 @@ public class ShopCommand {
                 ShopFunction.removeShopPermission((Player) p, args[1]);
             } else {
                 p.sendMessage(prefix + lang.get("cashshop_cmd_removepermission_usage"));
+            }
+        });
+        builder.addSubCommand("list", "dpgs.admin", lang.get("cashshop_cmd_list"), true, (p, args) -> {
+            if (args.length == 1) {
+                ShopFunction.listShops((Player) p);
+            } else {
+                p.sendMessage(prefix + lang.get("cashshop_cmd_list_usage"));
             }
         });
         for (String c : builder.getSubCommandNames()) {

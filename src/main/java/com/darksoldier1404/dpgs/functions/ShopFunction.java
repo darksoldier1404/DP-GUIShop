@@ -359,4 +359,18 @@ public class ShopFunction {
         saveShops();
         p.sendMessage(prefix + lang.getWithArgs("shop_msg_remove_permission", shopName));
     }
+
+    public static void listShops(Player p) {
+        if (shops.isEmpty()) {
+            p.sendMessage(prefix + lang.getWithArgs("shop_msg_no_shops"));
+            return;
+        }
+        p.sendMessage(prefix + lang.getWithArgs("shop_msg_shop_list_header"));
+        for (Shop shop : shops.values()) {
+            String status = shop.isEnabled() ? "§aEnabled" : "§cDisabled";
+            String permission = shop.getPremission() != null ? shop.getPremission() : "None";
+            p.sendMessage(prefix + lang.getWithArgs("shop_msg_shop_list_item", shop.getName(), status, permission));
+        }
+        p.sendMessage(prefix + lang.getWithArgs("shop_msg_shop_list_footer"));
+    }
 }
