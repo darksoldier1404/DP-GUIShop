@@ -4,6 +4,7 @@ import com.darksoldier1404.dpgs.obj.Shop;
 import com.darksoldier1404.dpgs.obj.ShopPrices;
 import com.darksoldier1404.dppc.api.essentials.MoneyAPI;
 import com.darksoldier1404.dppc.api.inventory.DInventory;
+import com.darksoldier1404.dppc.utils.ColorUtils;
 import com.darksoldier1404.dppc.utils.InventoryUtils;
 import com.darksoldier1404.dppc.utils.NBT;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -74,7 +75,7 @@ public class ShopFunction {
             return;
         }
         DInventory inv = shop.getInventory().clone();
-        inv.updateTitle(shop.getTitle());
+        inv.updateTitle(ColorUtils.applyColor(shop.getTitle()));
         inv.setObj(name);
         inv.setChannel(0);
         inv.setCurrentPage(0);
