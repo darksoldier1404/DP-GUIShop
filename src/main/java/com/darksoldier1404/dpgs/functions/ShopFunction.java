@@ -4,6 +4,7 @@ import com.darksoldier1404.dpgs.obj.Shop;
 import com.darksoldier1404.dpgs.obj.ShopPrices;
 import com.darksoldier1404.dppc.api.essentials.MoneyAPI;
 import com.darksoldier1404.dppc.api.inventory.DInventory;
+import com.darksoldier1404.dppc.utils.ColorUtils;
 import com.darksoldier1404.dppc.utils.InventoryUtils;
 import com.darksoldier1404.dppc.utils.NBT;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -74,7 +75,7 @@ public class ShopFunction {
             return;
         }
         DInventory inv = shop.getInventory().clone();
-        inv.updateTitle(shop.getTitle());
+        inv.updateTitle(ColorUtils.applyColor(shop.getTitle()));
         inv.setObj(name);
         inv.setChannel(0);
         inv.setCurrentPage(0);
@@ -368,9 +369,34 @@ public class ShopFunction {
         p.sendMessage(prefix + lang.getWithArgs("shop_msg_shop_list_header"));
         for (Shop shop : shops.values()) {
             String status = shop.isEnabled() ? "§aEnabled§f" : "§cDisabled§f";
-            String permission = shop.getPremission() != null ? "§e"+shop.getPremission() : "§eNone";
+            String permission = shop.getPremission() != null ? "§e" + shop.getPremission() : "§eNone";
             p.sendMessage(prefix + lang.getWithArgs("shop_msg_shop_list_item", shop.getName(), status, permission));
         }
         p.sendMessage(prefix + lang.getWithArgs("shop_msg_shop_list_footer", String.valueOf(shops.size())));
+    }
+
+    public static void setShopTitle(Player p, String shopName, String[] args) {
+        if (!isShopExists(shopName)) {
+            p.sendMessage(prefix + lang.getWithArgs("shop_err_not_exist", shopName));
+            return;
+        }
+        Shop shop = shops.get(shopName);
+        if (args.length < 2) {
+            p.sendMessage(prefix + lang.getWithArgs("shop_err_invalid_title"));
+            return;
+        }
+        StringBuilder titleBuilder = new StringBuilder();
+        for (int i = 1; i < args.length; i++) {
+            titleBuilder.append(args[i]).append(" ");
+        }
+        String title = titleBuilder.toString().trim();
+        if (title.isEmpty()) {
+            p.sendMessage(prefix + lang.getWithArgs("shop_err_invalid_title"));
+            return;
+        }
+        shop.setTitle(title);
+        shops.put(shopName, shop);
+        saveShops();
+        p.sendMessage(prefix + lang.getWithArgs("shop_msg_set_title", shopName, title));
     }
 }
