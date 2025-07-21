@@ -106,6 +106,13 @@ public class ShopCommand {
                 p.sendMessage(prefix + lang.get("cashshop_cmd_list_usage"));
             }
         });
+        builder.addSubCommand("title", "dpgs.admin", lang.get("cashshop_cmd_title"), true, (p, args) -> {
+            if (args.length >= 3) {
+                ShopFunction.setShopTitle((Player) p, args[1], args);
+            } else {
+                p.sendMessage(prefix + lang.get("cashshop_cmd_title_usage"));
+            }
+        });
         for (String c : builder.getSubCommandNames()) {
             builder.addTabCompletion(c, (sender, args) -> {
                 if (args.length == 1) {
