@@ -9,10 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -29,52 +26,53 @@ public class DPGSEvent implements Listener {
             if (inv.isValidHandler(plugin)) {
                 Shop shop = ShopFunction.getShop(inv.getObj().toString());
                 ItemStack item = e.getCurrentItem();
+                if (item != null && item.getType().isAir()) {
+                    return;
+                }
                 ClickType clickType = e.getClick();
-                if (item != null) {
-                    if (NBT.hasTagKey(item, "dpgs.prevpage")) {
-                        inv.applyChanges();
-                        inv.prevPage();
-                        e.setCancelled(true);
+                if (NBT.hasTagKey(item, "dpgs.prevpage")) {
+                    inv.applyChanges();
+                    inv.prevPage();
+                    e.setCancelled(true);
+                    return;
+                }
+                if (NBT.hasTagKey(item, "dpgs.nextpage")) {
+                    inv.applyChanges();
+                    inv.nextPage();
+                    e.setCancelled(true);
+                    return;
+                }
+                if (NBT.hasTagKey(item, "dpgs.clickcancel")) {
+                    e.setCancelled(true);
+                    return;
+                }
+                if (inv.isValidChannel(0)) { // Main shop channel
+                    e.setCancelled(true);
+                    if (clickType == ClickType.LEFT) {
+                        ShopFunction.buyItem(p, shop.getName(), inv.getCurrentPage(), e.getSlot(), false);
+                        return;
+                    } else if (clickType == ClickType.RIGHT) {
+                        ShopFunction.sellItem(p, shop.getName(), inv.getCurrentPage(), e.getSlot(), false);
+                        return;
+                    } else if (clickType == ClickType.SHIFT_LEFT) {
+                        ShopFunction.buyItem(p, shop.getName(), inv.getCurrentPage(), e.getSlot(), true);
+                        return;
+                    } else if (clickType == ClickType.SHIFT_RIGHT) {
+                        ShopFunction.sellItem(p, shop.getName(), inv.getCurrentPage(), e.getSlot(), true);
                         return;
                     }
-                    if (NBT.hasTagKey(item, "dpgs.nextpage")) {
-                        inv.applyChanges();
-                        inv.nextPage();
+                }
+                if (inv.isValidChannel(1)) { // Item setting channel
+                    return;
+                }
+                if (inv.isValidChannel(2)) { // Price setting channel
+                    if (e.getClickedInventory().getType() != InventoryType.PLAYER) {
                         e.setCancelled(true);
+                        currentEdit.put(p.getUniqueId(), Tuple.of(e.getSlot(), inv));
+                        p.closeInventory();
                         return;
-                    }
-                    if (NBT.hasTagKey(item, "dpgs.clickcancel")) {
+                    } else {
                         e.setCancelled(true);
-                        return;
-                    }
-                    if (inv.isValidChannel(0)) { // Main shop channel
-                        e.setCancelled(true);
-                        if (clickType == ClickType.LEFT) {
-                            ShopFunction.buyItem(p, shop.getName(), inv.getCurrentPage(), e.getSlot(), false);
-                            return;
-                        } else if (clickType == ClickType.RIGHT) {
-                            ShopFunction.sellItem(p, shop.getName(), inv.getCurrentPage(), e.getSlot(), false);
-                            return;
-                        }else if (clickType == ClickType.SHIFT_LEFT) {
-                            ShopFunction.buyItem(p, shop.getName(), inv.getCurrentPage(), e.getSlot(), true);
-                            return;
-                        } else if (clickType == ClickType.SHIFT_RIGHT) {
-                            ShopFunction.sellItem(p, shop.getName(), inv.getCurrentPage(), e.getSlot(), true);
-                            return;
-                        }
-                    }
-                    if (inv.isValidChannel(1)) { // Item setting channel
-                        return;
-                    }
-                    if (inv.isValidChannel(2)) { // Price setting channel
-                        if (e.getClickedInventory().getType() != InventoryType.PLAYER) {
-                            e.setCancelled(true);
-                            currentEdit.put(p.getUniqueId(), Tuple.of(e.getSlot(), inv));
-                            p.closeInventory();
-                            return;
-                        } else {
-                            e.setCancelled(true);
-                        }
                     }
                 }
             }
@@ -109,13 +107,13 @@ public class DPGSEvent implements Listener {
                     int buyPrice = Integer.parseInt(message.split(":")[0]);
                     int sellPrice = Integer.parseInt(message.split(":")[1]);
                     ShopFunction.setShopPrice(inv.getCurrentPage(), shopName, buyPrice, sellPrice, inv.getCurrentPage(), slot);
-                    p.sendMessage(prefix + lang.getWithArgs("shop_price_set", shopName, String.valueOf(buyPrice), String.valueOf(sellPrice)));
+                    p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("shop_price_set", shopName, String.valueOf(buyPrice), String.valueOf(sellPrice)));
                 } else if (message.matches("\\d+")) {
                     int price = Integer.parseInt(message);
                     ShopFunction.setShopPrice(inv.getCurrentPage(), shopName, price, 0, inv.getCurrentPage(), slot);
-                    p.sendMessage(prefix + lang.getWithArgs("shop_price_set", shopName, String.valueOf(price), "0"));
+                    p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("shop_price_set", shopName, String.valueOf(price), "0"));
                 } else {
-                    p.sendMessage(prefix + lang.getWithArgs("shop_price_setting_number_guide"));
+                    p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("shop_price_setting_number_guide"));
                 }
                 currentEdit.remove(p.getUniqueId());
                 Bukkit.getScheduler().runTask(plugin, () -> ShopFunction.openShopPriceSetting(p, shopName));
