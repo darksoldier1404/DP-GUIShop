@@ -28,7 +28,7 @@ public class CommonFunction {
     }
 
     public static void saveConfig() {
-        plugin.save();
+        plugin.saveDataContainer();
     }
 
     public static void migration() {

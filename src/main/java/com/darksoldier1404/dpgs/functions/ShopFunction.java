@@ -59,7 +59,7 @@ public class ShopFunction {
     }
 
     public static void saveShops() {
-        plugin.save();
+        plugin.saveDataContainer();
     }
 
     public static void openShop(Player p, String name) {

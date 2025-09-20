@@ -164,8 +164,6 @@ public class Shop implements DataCargo {
         }
         DInventory inventory = new DInventory(title, size * 9, true, plugin);
         inventory = inventory.deserialize(data);
-        System.out.println(data.saveToString());
-        System.out.println(plugin.getPrefix() + "Shop " + name + " loaded with title: " + title + ", size: " + size + ", enabled: " + isEnabled);
         return new Shop(name, title, size, inventory, prices, isEnabled, permission);
     }
 }

@@ -2,7 +2,6 @@ package com.darksoldier1404.dpgs;
 
 import com.darksoldier1404.dpgs.commands.ShopCommand;
 import com.darksoldier1404.dpgs.events.DPGSEvent;
-import com.darksoldier1404.dpgs.functions.CommonFunction;
 import com.darksoldier1404.dpgs.obj.Shop;
 import com.darksoldier1404.dppc.api.inventory.DInventory;
 import com.darksoldier1404.dppc.data.DPlugin;
@@ -17,7 +16,6 @@ import java.util.UUID;
 
 public class GUIShop extends DPlugin {
     public static GUIShop plugin;
-    //    public static final Map<String, Shop> shops = new HashMap<>();
     public static DataContainer<String, Shop> shops;
     public static final Map<UUID, Tuple<Integer, DInventory>> currentEdit = new HashMap<>();
 
@@ -30,20 +28,17 @@ public class GUIShop extends DPlugin {
     public void onLoad() {
         PluginUtil.addPlugin(this, 26579);
         init();
-        load(new DataContainer<String, Shop>(this, DataType.CUSTOM, "shops"), Shop.class);
-        shops = get("shops");
+        shops = loadDataContainer(new DataContainer<String, Shop>(this, DataType.CUSTOM, "shops"), Shop.class);
     }
 
     @Override
     public void onEnable() {
-//        CommonFunction.init();
         getServer().getPluginManager().registerEvents(new DPGSEvent(), plugin);
         getCommand("dpgs").setExecutor(new ShopCommand().getExecutor());
-        System.out.println(shops.get("test").getName() + " loaded successfully.");
     }
 
     @Override
     public void onDisable() {
-        save();
+        saveDataContainer();
     }
 }
