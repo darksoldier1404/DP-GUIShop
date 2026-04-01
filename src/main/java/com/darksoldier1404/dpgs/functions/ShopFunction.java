@@ -65,7 +65,7 @@ public class ShopFunction {
     }
 
     public static void saveShops() {
-        plugin.saveDataContainer();
+        plugin.saveAllData();
     }
 
     public static void openShop(Player p, String name) {
@@ -178,8 +178,9 @@ public class ShopFunction {
                 String format = plugin.loreFormat;
                 format = format.replace("<buy_price>", price != null ? String.valueOf(price.getBuyPrice()) : plugin.getLang().get("shop_lore_cant_buy"));
                 format = format.replace("<sell_price>", price != null ? String.valueOf(price.getSellPrice()) : plugin.getLang().get("shop_lore_cant_sell"));
-                format = format.replace("<buy_stack_price>", price != null ? String.valueOf(price.getBuyPrice() * item.getMaxStackSize()) : plugin.getLang().get("shop_lore_cant_buy_stack"));
-                format = format.replace("<sell_stack_price>", price != null ? String.valueOf(price.getSellPrice() * item.getMaxStackSize()) : plugin.getLang().get("shop_lore_cant_sell_stack"));
+                format = format.replace("<buy_stack_price>", price != null ? String.valueOf(price.getBuyPrice() * item.getMaxStackSize()) : plugin.getLang().get("shop_lore_cant_buy"));
+                format = format.replace("<sell_stack_price>", price != null ? String.valueOf(price.getSellPrice() * item.getMaxStackSize()) : plugin.getLang().get("shop_lore_cant_sell"));
+                format = format.replace("<sell_all_price>", price != null ? String.valueOf(price.getSellPrice() * InventoryUtils.getSimlarItemCount(p.getInventory().getStorageContents(), item)) : plugin.getLang().get("shop_lore_cant_sell"));
                 format = ColorUtils.applyColor(format);
                 if (PluginUtil.isDependPluginLoaded(DependPlugin.PlaceholderAPI)) {
                     format = PlaceholderUtils.applyPlaceholder(p, format);
@@ -477,5 +478,37 @@ public class ShopFunction {
             saveShops();
             p.sendMessage(plugin.getPrefix() + "shop prices have been decreased by " + buyPrice + " (buy) and " + sellPrice + " (sell) for all items in shop " + name + ".");
         }
+    }
+
+    public static void sellAll(Player p, String name, int currentPage, int slot) {
+        if (!isShopExists(name)) {
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("shop_err_not_exist", name));
+            return;
+        }
+        Shop shop = shops.get(name);
+        ShopPrices price = shop.findPrice(currentPage, slot);
+        if (price == null) {
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("shop_err_no_price"));
+            return;
+        }
+        if (price.getSellPrice() <= 0) {
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("shop_err_cant_sell"));
+            return;
+        }
+        ItemStack item = shop.findItem(currentPage, slot);
+        if (item == null || item.getType() == org.bukkit.Material.AIR) {
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("shop_err_no_item"));
+            return;
+        }
+        item = item.clone();
+        int availableAmount = InventoryUtils.getSimlarItemCount(p.getInventory().getStorageContents(), item);
+        if (availableAmount < 1) {
+            p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("shop_err_no_have_item"));
+            return;
+        }
+        item.setAmount(availableAmount);
+        MoneyAPI.addMoney(p, price.getSellPrice() * availableAmount);
+        p.getInventory().removeItem(item);
+        p.sendMessage(plugin.getPrefix() + plugin.getLang().getWithArgs("shop_msg_sell", String.valueOf(availableAmount), item.getType().name(), name));
     }
 }

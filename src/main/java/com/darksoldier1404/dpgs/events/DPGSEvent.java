@@ -40,6 +40,9 @@ public class DPGSEvent implements Listener {
                 } else if (clickType == ClickType.SHIFT_RIGHT) {
                     ShopFunction.sellItem(p, shop.getName(), inv.getCurrentPage(), e.getSlot(), true);
                     return;
+                }else if(clickType == ClickType.MIDDLE){
+                    ShopFunction.sellAll(p, shop.getName(), inv.getCurrentPage(), e.getSlot());
+                    return;
                 }
             }
             if (inv.isValidChannel(2)) { // Price setting channel

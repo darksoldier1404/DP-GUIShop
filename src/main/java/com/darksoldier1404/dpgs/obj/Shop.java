@@ -130,6 +130,7 @@ public class Shop implements DataCargo {
         data.set("title", title);
         data.set("size", size);
         data.set("enabled", isEnabled);
+        data.set("permission", premission);
         if (!prices.isEmpty()) {
             for (ShopPrices price : prices) {
                 data.set("prices." + price.getPage() + "." + price.getSlot() + ".buyPrice", price.getBuyPrice());
